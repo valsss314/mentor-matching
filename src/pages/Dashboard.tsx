@@ -16,7 +16,7 @@ const Dashboard = () => {
       </ul>
     </nav>
     <section className="max-w-none">
-      <h1 className="mt-15 text-6xl text-left mb-2 font-extrabold">Mentor Matching</h1>
+      <h1 className="text-6xl text-left mb-2 font-extrabold mt-15">Mentor Matching</h1>
       <h2 className="text-2xl text-left mb-5">Bring your ideas to life with the help of our amazing mentors!</h2>
       <Link to="/Register"><button className="brightness-100 flex justify-start bg-gray-800 text-white text-xl rounded px-5 py-5 hover:bg-gray-500 cursor-pointer">Get Started</button></Link>
     </section>
