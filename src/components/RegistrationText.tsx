@@ -1,17 +1,25 @@
 import React from 'react'
 import '../globals.css'
 
-const RegistrationText = ({name}: {name: string}) => {
-  return (
-    <div className="flex items-center justify-center">
-     <div className="grid gap-4">
-        <div className="flex gap-2">
-            <p>{name}</p>
-            <input type="text" className="mb-5 bg-gray-200"></input>
-        </div>
-     </div>
-    </div>
-  )
-}
+type RegistrationTextProps = {
+    name: string;
+    value: string;
+    onChange: (val: string) => void;
+    type?: string;
+};
+
+const RegistrationText = ({ name, value, onChange, type = "text" }: RegistrationTextProps) => {
+    return (
+      <div className="flex items-center justify-center">
+        <input
+          type={type}
+          placeholder={name}
+          className="px-3 py-2 w-64 my-3 border rounded focus:ring-2 focus:ring-blue-500"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </div>
+    );
+  };
 
 export default RegistrationText
