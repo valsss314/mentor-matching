@@ -17,7 +17,7 @@ const Register = () => {
         <h1 className="mt-10 text-3xl">Hacker</h1>
         <Link to="/HackerRegister">
           <button className="cursor-pointer items-center object-contain">
-            <img src={hackerimg} className="max-w-xs scale-80"></img>
+            <img src={hackerimg} alt="image of a hacker" className="max-w-xs scale-80"></img>
           </button>
         </Link>
       </div>
@@ -31,7 +31,7 @@ const Register = () => {
       </div>
     </section>
     <h1 className="text-h3 items-center mt-5">Already have an account?</h1> 
-    <Link to="/Login"><div className="underline">Log in.</div></Link>
+    <Link to="/Login"><div className="underline">Sign in.</div></Link>
     </>
   )
 }
