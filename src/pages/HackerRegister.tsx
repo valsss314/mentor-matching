@@ -25,7 +25,8 @@ const HackerRegister = () => {
       const defaultData: HackerData = { 
         email: email, 
         name: name,
-        tableNumber: tableNumber
+        tableNumber: tableNumber,
+        role: "Hacker"
       };
       await setDoc(doc(db, "users", userCred.user.uid), defaultData);
       navigate("/Login"); 
@@ -45,7 +46,7 @@ const HackerRegister = () => {
       <Link to="/"><img className="top-0 -left-50 h-30" src={logo} alt="Technica logo"></img></Link> 
     </nav>
     <section>
-      <h1 className="text-3xl mt-5 mb-5">Hacker Sign Up</h1>
+      <h1 className="text-3xl mb-5">Hacker Sign Up</h1>
       <RegistrationText name="Name" value={name} onChange={setName}/>
       <RegistrationText name="Table #" value={tableNumber} onChange={setTableNumber}/>
       <RegistrationText name="Email" value={email} onChange={setEmail}/>
