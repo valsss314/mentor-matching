@@ -10,6 +10,8 @@ import HackerRegister from "./pages/HackerRegister";
 import MentorRegister from "./pages/MentorRegister";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router"
 import ForgotPassword from "./pages/ForgotPassword";
+import HackerScreen from "./pages/HackerScreen";
+import MentorScreen from "./pages/MentorScreen";
 import "./App.css"
 import './index.css';
 
@@ -22,6 +24,9 @@ function App() {
         <Route path="/Register" element={<Register />} />
         <Route path="/HackerRegister" element={<HackerRegister />} />
         <Route path="/MentorRegister" element={<MentorRegister />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/HackerScreen" element={<HackerScreen />} />
+        <Route path="/MentorScreen" element={<MentorScreen />} />
       </Routes>
   );
 }
