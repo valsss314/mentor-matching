@@ -1,17 +1,18 @@
 import React from 'react'
 import { useLocation } from "react-router-dom";
-import type { MentorData } from "../types/types";
+import type { MentorData, HackerData } from "../types/types";
 import { Link } from "react-router-dom"
 import logo from "../assets/logo-black.png"
 import '../globals.css'
-import { collection, getDocs, query, where, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, query, where, onSnapshot, updateDoc, arrayUnion, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useState, useEffect } from "react"
 
 const HackerScreen = () => {
   const location = useLocation();
-  const user = location.state?.user as MentorData;
-  const [mentors, setMentors] = useState<MentorData[]>([]);
+  const user = location.state?.user as HackerData;
+  const [mentors, setMentors] = useState<MentorWithID[]>([]);
+  type MentorWithID = MentorData & { id: string }
   
   useEffect(() => {
     const q = query(
@@ -30,6 +31,14 @@ const HackerScreen = () => {
     return () => unsubscribe();
   }, []);
 
+  const handleClick = async (mentor: MentorWithID) => {
+    const mentorRef = doc(db, "users", mentor.id);
+    await updateDoc(mentorRef, {
+      queue: arrayUnion(user)
+    });
+    alert("Added to " + mentor.name + "'s queue! An email will be sent when they are ready for you.");
+  }
+
   return (
     <>
       <nav className="flex justify-between items-center">
@@ -40,7 +49,7 @@ const HackerScreen = () => {
         {mentors.length === 0 ? (
           <p>No mentors found.</p>
         ) : (
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-3 gap-4">
         {mentors.map((mentor) => (
           <li className="p-4 border rounded shadow list-none">
             <h3 className="text-lg font-bold">Mentor {mentor.name}</h3>
@@ -49,7 +58,7 @@ const HackerScreen = () => {
             {(mentor.skills).split(",").map ((skill) => (
               <p>{skill}</p>
             ))}
-            <button className="cursor-pointer mt-5 brightness-100 bg-gradient-to-r from-cyan-500 to-pink-500 brightness-125 rounded px-2 py-2 hover:brightness-100">Add to Queue</button>
+            <button onClick={() => handleClick(mentor)} className="cursor-pointer mt-5 brightness-100 bg-gradient-to-r from-cyan-500 to-pink-500 brightness-125 rounded px-2 py-2 hover:brightness-100">Add to Queue</button>
           </li>
         ))}
         </div>

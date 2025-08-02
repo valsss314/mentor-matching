@@ -10,4 +10,5 @@ export interface MentorData {
     name: string;
     skills: string;
     role: string;
+    queue: HackerData[];
 }

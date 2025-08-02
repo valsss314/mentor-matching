@@ -24,7 +24,8 @@ const MentorRegister = () => {
         email: email, 
         name: name,
         skills: skills,
-        role: "Mentor"
+        role: "Mentor",
+        queue: [],
       };
       await setDoc(doc(db, "users", userCred.user.uid), defaultData);
       navigate("/Login");
@@ -47,7 +48,7 @@ const MentorRegister = () => {
     <section>
       <h1 className="text-3xl mb-5">Mentor Sign Up</h1>
       <RegistrationText name="Name" value={name} onChange={setName}/>
-      <RegistrationText name="Technical Skills" value={skills} onChange={setSkills}/>
+      <RegistrationText name="Technical Skills (separate by ,)" value={skills} onChange={setSkills}/>
       <RegistrationText name="Email" value={email} onChange={setEmail}/>
       <RegistrationText name="Password" value={password} onChange={setPassword} type="password"/>
     </section>
