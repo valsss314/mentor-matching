@@ -10,16 +10,10 @@ import { useState, useEffect } from "react"
 
 const HackerScreen = () => {
   const location = useLocation();
-  const user = location.state?.user as HackerData;
-  const [hackerinfo, setHackerInfo] = useState<HackerWithID>({
-    id: "",
-    email: "",
-    name: "",
-    tableNumber: "",
-    role: "Hacker"});
+  const user = location.state?.user as HackerDataWithID;
   const [mentors, setMentors] = useState<MentorWithID[]>([]);
   type MentorWithID = MentorData & { id: string }
-  type HackerWithID = HackerData & {id: string}
+  type HackerDataWithID = HackerData & { id: string }
   
   useEffect(() => {
     const q = query(
@@ -33,15 +27,25 @@ const HackerScreen = () => {
         ...(doc.data() as MentorData)
       }));
       setMentors(mentorList);
-      const hackerinfo = {
-        id: snapshot.docs[0].id,
-        ...(snapshot.docs[0].data() as HackerData)
-      }
-      setHackerInfo(hackerinfo);
     });
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const hackerRef = doc(db, "users", user.id);
+    const unsubscribe = onSnapshot(hackerRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.status === "ready") {
+          alert("A mentor is ready to help you!");
+          updateDoc(hackerRef, { status: "waiting" });
+        }
+      }
+    });
+  
+    return () => unsubscribe();
+  }, [user.id]);  
 
   const handleClick = async (mentor: MentorWithID) => {
     const mentorRef = doc(db, "users", mentor.id);
