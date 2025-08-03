@@ -10,7 +10,7 @@ const Dashboard = () => {
     <nav className="flex justify-between items-center">
       <Link to="/"><img className="top-0 -left-50 h-30" src={logo} alt="Technica logo"></img></Link> 
       <ul className="inline-flex gap-[50px]">
-        <li><Link to="/AboutUs"><button className="cursor-pointer text-xl">About Us</button></Link></li>
+        {/* <li><Link to="/AboutUs"><button className="cursor-pointer text-xl">About Us</button></Link></li> */}
         <li><Link to="/Login"><button className="cursor-pointer text-xl">Sign In</button></Link></li>
         <li><Link to="/Register"><button className="text-xl bg-gray-800 text-white rounded px-3 hover:bg-gray-500 cursor-pointer font-bold">Register</button></Link></li>
       </ul>
