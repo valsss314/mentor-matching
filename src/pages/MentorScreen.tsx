@@ -28,7 +28,8 @@ const MentorScreen = () => {
   const handleReadyToHelp = async (hackerid: string) => {
     const hackerRef = doc(db, "users", hackerid);
     await updateDoc(hackerRef, {
-      status: "ready"
+      status: "ready",
+      mentor: user.name
     });
     alert("Hacker has been alerted, please proceed to their table.")
   };

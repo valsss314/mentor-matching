@@ -38,7 +38,7 @@ const HackerScreen = () => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         if (data.status === "ready") {
-          alert("A mentor is ready to help you!");
+          alert((data.mentor) + " is ready to help you! Hang tight while they find you at table " + user.tableNumber);
           updateDoc(hackerRef, { status: "waiting" });
         }
       }
@@ -52,7 +52,7 @@ const HackerScreen = () => {
     await updateDoc(mentorRef, {
       queue: arrayUnion(auth.currentUser?.uid)
     });
-    alert("Added to " + mentor.name + "'s queue! An email will be sent when they are ready for you.");
+    alert("Added to " + mentor.name + "'s queue! An alert will be sent on this page when they are ready for you.");
   }
 
   return (
@@ -61,6 +61,7 @@ const HackerScreen = () => {
         <Link to="/"><img className="top-0 -left-50 h-30" src={logo} alt="Technica logo"></img></Link> 
       </nav>
       <h1 className="text-2xl font-bold">Welcome, {user.name}!</h1>
+      <h2>Table {user.tableNumber}</h2>
       <section className="mt-4">
         {mentors.length === 0 ? (
           <p>No mentors found.</p>
