@@ -4,15 +4,22 @@ import type { MentorData, HackerData } from "../types/types";
 import { Link } from "react-router-dom"
 import logo from "../assets/logo-black.png"
 import '../globals.css'
-import { collection, getDocs, query, where, onSnapshot, updateDoc, arrayUnion, doc } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import { collection, getDoc, query, where, onSnapshot, updateDoc, arrayUnion, doc } from "firebase/firestore";
+import { auth, db } from "../firebase/firebase";
 import { useState, useEffect } from "react"
 
 const HackerScreen = () => {
   const location = useLocation();
   const user = location.state?.user as HackerData;
+  const [hackerinfo, setHackerInfo] = useState<HackerWithID>({
+    id: "",
+    email: "",
+    name: "",
+    tableNumber: "",
+    role: "Hacker"});
   const [mentors, setMentors] = useState<MentorWithID[]>([]);
   type MentorWithID = MentorData & { id: string }
+  type HackerWithID = HackerData & {id: string}
   
   useEffect(() => {
     const q = query(
@@ -26,6 +33,11 @@ const HackerScreen = () => {
         ...(doc.data() as MentorData)
       }));
       setMentors(mentorList);
+      const hackerinfo = {
+        id: snapshot.docs[0].id,
+        ...(snapshot.docs[0].data() as HackerData)
+      }
+      setHackerInfo(hackerinfo);
     });
 
     return () => unsubscribe();
@@ -34,7 +46,7 @@ const HackerScreen = () => {
   const handleClick = async (mentor: MentorWithID) => {
     const mentorRef = doc(db, "users", mentor.id);
     await updateDoc(mentorRef, {
-      queue: arrayUnion(user)
+      queue: arrayUnion(auth.currentUser?.uid)
     });
     alert("Added to " + mentor.name + "'s queue! An email will be sent when they are ready for you.");
   }

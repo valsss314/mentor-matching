@@ -8,7 +8,7 @@ import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import type { signOut, User } from "firebase/auth"
 import {useNavigate} from "react-router-dom"
-import type { HackerData } from "../types/types.ts"
+import type { HackerWithID, HackerData } from "../types/types.ts"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const HackerRegister = () => {
@@ -26,7 +26,7 @@ const HackerRegister = () => {
         email: email, 
         name: name,
         tableNumber: tableNumber,
-        role: "Hacker"
+        role: "Hacker",
       };
       await setDoc(doc(db, "users", userCred.user.uid), defaultData);
       navigate("/Login"); 
