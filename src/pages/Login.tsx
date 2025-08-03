@@ -29,10 +29,17 @@ const Login = () => {
       if (userSnap.exists()) {
         const userData = userSnap.data();
         if (userData.role === "Hacker") {
-          navigate("/HackerScreen", { state: { user: userData } });
+          navigate("/HackerScreen", { state: { user: {...userData, id: userid} } });
         }
         else {
-          navigate("/MentorScreen", { state: { user: userData } });
+          navigate("/MentorScreen", {
+            state: {
+              user: {
+                ...userData,
+                id: userid
+              }
+            }
+          });
         }
       }
       else {
