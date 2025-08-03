@@ -35,6 +35,9 @@ const Login = () => {
           navigate("/MentorScreen", { state: { user: userData } });
         }
       }
+      else {
+        alert("No email associated with an account.")
+      }
     } catch (error: any ) {
       alert(error.message);
     }

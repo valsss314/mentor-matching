@@ -1,3 +1,5 @@
+export type HackerWithID = HackerData & { id: string }
+
 export interface HackerData {
     email: string;
     name: string;
@@ -10,5 +12,5 @@ export interface MentorData {
     name: string;
     skills: string;
     role: string;
-    queue: HackerData[];
+    queue: string[];
 }
