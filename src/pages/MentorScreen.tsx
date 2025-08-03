@@ -1,18 +1,20 @@
 import React from 'react'
 import { useLocation } from "react-router-dom";
 import type { MentorData, HackerData, HackerWithID } from "../types/types";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logo from "../assets/logo-black.png"
 import '../globals.css'
 import { collection, getDocs, query, where, onSnapshot, updateDoc, arrayUnion, doc, arrayRemove } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebase";
 import { useState, useEffect } from "react"
+import { signOut } from "firebase/auth";
 
 const MentorScreen = () => {
   type MentorWithID = MentorData & { id: string };
   const location = useLocation();
   const user = location.state?.user as MentorWithID;
   const [hackers, setHackers] = useState<HackerWithID[]>([]);
+  const navigate = useNavigate();
 
   const removeTop = async () => {
     if (hackers.length > 0) {
@@ -76,10 +78,20 @@ useEffect(() => {
   };
 }, [queue]);
 
+const handleLogout = async () => {
+  try {
+    await signOut(auth);
+    navigate("/");
+  } catch (error) {
+    console.error("Error signing out:", error);
+  }
+};
+
   return (
     <>
       <nav className="flex justify-between items-center">
-        <Link to="/"><img className="top-0 -left-50 h-30" src={logo} alt="Technica logo"></img></Link> 
+        <img className="top-0 -left-50 h-30" src={logo} alt="Technica logo"></img>
+        <button onClick={handleLogout} className="mt-3 brightness-100 border brightness-125 rounded px-3 py-1 hover:brightness-100 cursor-pointer text-xl">Log Out</button>
       </nav>
       <h1 className="text-2xl font-bold">Welcome, {user.name}!</h1>
 

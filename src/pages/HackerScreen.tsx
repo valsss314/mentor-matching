@@ -1,12 +1,13 @@
 import React from 'react'
 import { useLocation } from "react-router-dom";
 import type { MentorData, HackerData } from "../types/types";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logo from "../assets/logo-black.png"
 import '../globals.css'
 import { collection, getDoc, query, where, onSnapshot, updateDoc, arrayUnion, doc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import { useState, useEffect } from "react"
+import { signOut } from "firebase/auth";
 
 const HackerScreen = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const HackerScreen = () => {
   const [mentors, setMentors] = useState<MentorWithID[]>([]);
   type MentorWithID = MentorData & { id: string }
   type HackerDataWithID = HackerData & { id: string }
+  const navigate = useNavigate();
   
   useEffect(() => {
     const q = query(
@@ -55,10 +57,20 @@ const HackerScreen = () => {
     alert("Added to " + mentor.name + "'s queue! An alert will be sent on this page when they are ready for you.");
   }
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/")
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
     <>
       <nav className="flex justify-between items-center">
-        <Link to="/"><img className="top-0 -left-50 h-30" src={logo} alt="Technica logo"></img></Link> 
+        <img className="top-0 -left-50 h-30" src={logo} alt="Technica logo"></img> 
+        <button onClick={handleLogout} className="mt-3 brightness-100 border brightness-125 rounded px-3 py-1 hover:brightness-100 cursor-pointer text-xl">Log Out</button>
       </nav>
       <h1 className="text-2xl font-bold">Welcome, {user.name}!</h1>
       <h2>Table {user.tableNumber}</h2>
@@ -71,6 +83,7 @@ const HackerScreen = () => {
           <li className="p-4 border rounded shadow list-none">
             <h3 className="text-lg font-bold">Mentor {mentor.name}</h3>
             <p>{mentor.email}</p>
+            {mentor.queue.length === 1 ? <p className="italic">1 person waiting</p> : <p className="italic">{mentor.queue.length} people waiting</p>}
             <p className="underline mt-3">Skills</p>
             {(mentor.skills).split(",").map ((skill) => (
               <p>{skill}</p>
