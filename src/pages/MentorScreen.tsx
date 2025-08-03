@@ -25,6 +25,14 @@ const MentorScreen = () => {
     }
   };
 
+  const handleReadyToHelp = async (hackerid: string) => {
+    const hackerRef = doc(db, "users", hackerid);
+    await updateDoc(hackerRef, {
+      status: "ready"
+    });
+    alert("Hacker has been alerted, please proceed to their table.")
+  };
+
   useEffect(() => {
     const unsubscribes: (() => void)[] = [];
 
@@ -67,8 +75,8 @@ const MentorScreen = () => {
             <p>Table number: {hacker.tableNumber}</p>
             {(index === 0) && 
               <div>
-                <button className="cursor-pointer mt-3 mr-3 brightness-100 bg-green-500 rounded px-2 py-2 hover:brightness-100">Ready To Help</button>
-                <button onClick={removeTop} className="cursor-pointer mt-3 brightness-100 bg-red-500 rounded px-2 py-2 hover:brightness-100">Remove</button>
+                <button onClick={() => handleReadyToHelp(hacker.id)} className="cursor-pointer mt-3 mr-3 brightness-100 bg-green-500 rounded px-2 py-2 hover:brightness-100">Ready To Help</button>
+                <button onClick={() => removeTop} className="cursor-pointer mt-3 brightness-100 bg-red-500 rounded px-2 py-2 hover:brightness-100">Remove</button>
               </div>
             }
           </li>
