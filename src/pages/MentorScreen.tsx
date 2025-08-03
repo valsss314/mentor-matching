@@ -36,26 +36,30 @@ const MentorScreen = () => {
 
   useEffect(() => {
     const unsubscribes: (() => void)[] = [];
-
-    if (user.queue && user.queue.length > 0){
+    const hackerMap: Map<string, HackerWithID> = new Map();
+  
+    if (user.queue && user.queue.length > 0) {
       user.queue.forEach((id: string) => {
         const hackerRef = doc(db, "users", id);
         const unsubscribe = onSnapshot(hackerRef, (docSnap) => {
           if (docSnap.exists()) {
-            setHackers(prev => {
-              const updated = prev.filter(h => (h.id !== id));
-              return [...updated, { id: id, ...(docSnap.data() as HackerData) }];
-            });
+            hackerMap.set(id, { id, ...(docSnap.data() as HackerData) });
+            const orderedHackers: HackerWithID[] = user.queue
+              .map(hid => hackerMap.get(hid))
+              .filter((h): h is HackerWithID => h !== undefined);
+            setHackers(orderedHackers);
           }
         });
         unsubscribes.push(unsubscribe);
       });
     }
-
+  
     return () => {
       unsubscribes.forEach(unsub => unsub());
     };
   }, [user.queue]);
+
+  console.log(user.queue)
 
   return (
     <>
@@ -77,7 +81,7 @@ const MentorScreen = () => {
             {(index === 0) && 
               <div>
                 <button onClick={() => handleReadyToHelp(hacker.id)} className="cursor-pointer mt-3 mr-3 brightness-100 bg-green-500 rounded px-2 py-2 hover:brightness-100">Ready To Help</button>
-                <button onClick={() => removeTop} className="cursor-pointer mt-3 brightness-100 bg-red-500 rounded px-2 py-2 hover:brightness-100">Remove</button>
+                <button onClick={removeTop} className="cursor-pointer mt-3 brightness-100 bg-red-500 rounded px-2 py-2 hover:brightness-100">Remove</button>
               </div>
             }
           </li>
