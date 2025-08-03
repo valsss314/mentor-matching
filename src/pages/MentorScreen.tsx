@@ -17,7 +17,9 @@ const MentorScreen = () => {
   const removeTop = async () => {
     if (hackers.length > 0) {
       const topHacker = hackers[0];
+      console.log(hackers.slice(1));
       setHackers(hackers.slice(1));
+      console.log(hackers);
       const mentorRef = doc(db, "users", user.id);
       await updateDoc(mentorRef, {
         queue: arrayRemove(topHacker.id)
@@ -34,32 +36,45 @@ const MentorScreen = () => {
     alert("Hacker has been alerted, please proceed to their table.")
   };
 
-  useEffect(() => {
-    const unsubscribes: (() => void)[] = [];
-    const hackerMap: Map<string, HackerWithID> = new Map();
-  
-    if (user.queue && user.queue.length > 0) {
-      user.queue.forEach((id: string) => {
-        const hackerRef = doc(db, "users", id);
-        const unsubscribe = onSnapshot(hackerRef, (docSnap) => {
-          if (docSnap.exists()) {
-            hackerMap.set(id, { id, ...(docSnap.data() as HackerData) });
-            const orderedHackers: HackerWithID[] = user.queue
-              .map(hid => hackerMap.get(hid))
-              .filter((h): h is HackerWithID => h !== undefined);
-            setHackers(orderedHackers);
-          }
-        });
-        unsubscribes.push(unsubscribe);
-      });
-    }
-  
-    return () => {
-      unsubscribes.forEach(unsub => unsub());
-    };
-  }, [user.queue]);
+  const [queue, setQueue] = useState<string[]>([]);
 
-  console.log(user.queue)
+useEffect(() => {
+  const mentorRef = doc(db, "users", user.id);
+  const unsubscribe = onSnapshot(mentorRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const updatedQueue = docSnap.data().queue || [];
+      setQueue(updatedQueue);
+    }
+  });
+  return () => unsubscribe();
+}, [user.id]);
+
+useEffect(() => {
+  const unsubscribes: (() => void)[] = [];
+  const hackerMap: Map<string, HackerWithID> = new Map();
+
+  if (queue.length > 0) {
+    queue.forEach((id: string) => {
+      const hackerRef = doc(db, "users", id);
+      const unsubscribe = onSnapshot(hackerRef, (docSnap) => {
+        if (docSnap.exists()) {
+          hackerMap.set(id, { id, ...(docSnap.data() as HackerData) });
+          const orderedHackers: HackerWithID[] = queue
+            .map(hid => hackerMap.get(hid))
+            .filter((h): h is HackerWithID => h !== undefined);
+          setHackers(orderedHackers);
+        }
+      });
+      unsubscribes.push(unsubscribe);
+    });
+  } else {
+    setHackers([]);
+  }
+
+  return () => {
+    unsubscribes.forEach(unsub => unsub());
+  };
+}, [queue]);
 
   return (
     <>

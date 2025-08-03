@@ -50,7 +50,7 @@ const HackerScreen = () => {
   const handleClick = async (mentor: MentorWithID) => {
     const mentorRef = doc(db, "users", mentor.id);
     await updateDoc(mentorRef, {
-      queue: arrayUnion(auth.currentUser?.uid)
+      queue: arrayUnion(user.id)
     });
     alert("Added to " + mentor.name + "'s queue! An alert will be sent on this page when they are ready for you.");
   }
