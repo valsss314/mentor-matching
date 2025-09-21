@@ -1,6 +1,4 @@
-import React from 'react'
 import {Link} from 'react-router'
-//import "../css/Dashboard.css"
 import logo from "../assets/logo-black.png"
 import '../globals.css'
 

@@ -1,10 +1,9 @@
-import React from 'react'
 import { useLocation } from "react-router-dom";
 import type { MentorData, HackerData } from "../types/types";
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import logo from "../assets/logo-black.png"
 import '../globals.css'
-import { collection, getDoc, query, where, onSnapshot, updateDoc, arrayUnion, doc } from "firebase/firestore";
+import { collection, query, where, onSnapshot, updateDoc, arrayUnion, doc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import { useState, useEffect } from "react"
 import { signOut } from "firebase/auth";

@@ -1,4 +1,3 @@
-import React from 'react'
 import RegistrationText from '../components/RegistrationText'
 import logo from '../assets/logo-black.png'
 import {Link} from "react-router"

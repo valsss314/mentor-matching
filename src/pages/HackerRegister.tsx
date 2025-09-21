@@ -1,15 +1,13 @@
-import React from 'react'
 import {Link} from "react-router-dom"
 import logo from "../assets/logo-black.png"
 import RegistrationText from '../components/RegistrationText'
 import '../globals.css'
-import { useEffect, useState } from "react";
-import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import { useState } from "react";
+import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
-import type { signOut, User } from "firebase/auth"
 import {useNavigate} from "react-router-dom"
-import type { HackerWithID, HackerData } from "../types/types.ts"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import type { HackerData } from "../types/types.ts"
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const HackerRegister = () => {
 

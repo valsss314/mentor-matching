@@ -1,7 +1,5 @@
-import React from 'react'
 import '../globals.css'
 import {Link} from "react-router-dom"
-import RegistrationText from '../components/RegistrationText'
 import logo from '../assets/logo-black.png'
 import LoginText from '../components/LoginText'
 import { useState } from "react";
@@ -10,7 +8,6 @@ import { getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import { useNavigate } from "react-router";
 import type {  } from "../types/types.ts"
-import HackerScreen from "./HackerScreen.tsx"
 
 const Login = () => {
 
