@@ -8,14 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
   const navigate = useNavigate();
 
   const handleReset = async () => {
     try {
       await sendPasswordResetEmail(auth, email);
       alert("Email sent! (You may need to check spam/junk)");
-      setSent(true);
       navigate("/Login")
     } catch (error: any) {
       alert(error.message);
